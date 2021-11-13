@@ -4,11 +4,8 @@ function pressRadioButton(pressedButtonID, radioButtonIDs) {
             document.getElementById(pressedButtonID);
         if ( !isButtonAlreadyPressed(pressedButton) ) {
             changeButtonStateToPressed(pressedButton);
-            var depressedButtonIDs = radioButtonIDs
-                .filter(id => id !== pressedButtonID);
-            depressedButtonIDs.forEach(id =>
-                changeButtonStateToDepressed(
-                    document.getElementById(id)));
+            depressTheOtherRadioButtons(pressedButtonID, radioButtonIDs);
+            doActualWorkOfTheButton(pressedButtonID);
         }
     }
 }
@@ -21,6 +18,7 @@ function pressToggleButton(pressedButtonID) {
             changeButtonStateToDepressed(pressedButton);
         else 
             changeButtonStateToPressed(pressedButton);
+        doActualWorkOfTheButton(pressedButtonID);
     }
 }
 
@@ -37,4 +35,39 @@ function changeButtonStateToPressed(button) {
 function changeButtonStateToDepressed(button) {
     button.classList.toggle("pressed", false);
     button.removeAttribute("style");
+}
+
+function depressTheOtherRadioButtons(pressedButtonID, radioButtonIDs) {
+    var depressedButtonIDs = radioButtonIDs.filter(id => 
+        id !== pressedButtonID);
+    depressedButtonIDs.forEach(id => 
+        changeButtonStateToDepressed(document.getElementById(id)));
+}
+
+function doActualWorkOfTheButton(pressedButtonID) {
+    var video = document.getElementById("video");
+    switch (pressedButtonID) {
+        case "play":
+            play(video); break;
+        case "pause":
+            video.pause(); break;
+        case "loop":
+            video.loop = !video.loop; break;
+        case "mute":
+            video.muted = !video.muted; break;
+        case "video1": case "video2":
+            switchVideoTo(pressedButtonID, video); break;
+    }
+}
+
+function play(video) {
+    if (video.ended) video.load();
+    video.play();
+}
+
+function switchVideoTo(videoBtnID, video) {
+    video.src = demoVideos[videoBtnID];
+    video.load();
+    video.play();
+    pressRadioButton("play", ["play", "pause"]);
 }
