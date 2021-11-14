@@ -1,3 +1,13 @@
+function pressButton(pressedButtonEvent, radioButtonIDs) {
+    var pressedButtonID = 
+        pressedButtonEvent.target.getAttribute("id");
+    if (radioButtonIDs.includes(pressedButtonID)) {
+        pressRadioButton(pressedButtonID, radioButtonIDs);
+    } else {
+        pressToggleButton(pressedButtonID);
+    }
+}
+
 function pressRadioButton(pressedButtonID, radioButtonIDs) {
     if (pressedButtonID !== "") {
         var pressedButton = 
@@ -47,6 +57,14 @@ function depressTheOtherRadioButtons(pressedButtonID, radioButtonIDs) {
 function doActualWorkOfTheButton(pressedButtonID) {
     var video = document.getElementById("video");
     switch (pressedButtonID) {
+        case "normal":
+            effectFunction = null; break;
+        case "western":
+            effectFunction = applyWesternEffect; break;
+        case "noir":
+            effectFunction = applyNoirEffect; break;
+        case "scifi":
+            effectFunction = applyScifiEffect; break;
         case "play":
             play(video); break;
         case "pause":
@@ -58,16 +76,4 @@ function doActualWorkOfTheButton(pressedButtonID) {
         case "video1": case "video2":
             switchVideoTo(pressedButtonID, video); break;
     }
-}
-
-function play(video) {
-    if (video.ended) video.load();
-    video.play();
-}
-
-function switchVideoTo(videoBtnID, video) {
-    video.src = demoVideos[videoBtnID];
-    video.load();
-    video.play();
-    pressRadioButton("play", ["play", "pause"]);
 }

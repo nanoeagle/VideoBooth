@@ -10,13 +10,3 @@ function handleControl(event) {
 function handleVideoSelection(event) {
     pressButton(event, ["video1", "video2"]);
 }
-
-function pressButton(pressedButtonEvent, radioButtonIDs) {
-    var pressedButtonID = 
-        pressedButtonEvent.target.getAttribute("id");
-    if (radioButtonIDs.includes(pressedButtonID)) {
-        pressRadioButton(pressedButtonID, radioButtonIDs);
-    } else {
-        pressToggleButton(pressedButtonID);
-    }
-}

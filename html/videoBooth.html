@@ -4,7 +4,10 @@
     <meta charset="utf-8">
     <title>Starring YOU Video Booth</title>
     <link rel="stylesheet" href="../css/videoBooth.css">
-    <script src="../js/helperFunctions.js"></script>
+    <script src="../js/effects.js"></script>
+    <script src="../js/controls.js"></script>
+    <script src="../js/videoSelection.js"></script>
+    <script src="../js/buttonHelper.js"></script>
     <script src="../js/handlers.js"></script>
     <script src="../js/videoBooth.js"></script>
   </head>
@@ -13,6 +16,12 @@
       <div id="console">
         <div id="videoDiv">
           <video id="video" width="720" height="480"></video>
+          <canvas id="buffer" width="720" height="480">
+            <p>Hey you, yes YOU, upgrade your browser!!</p>
+          </canvas>
+          <canvas id="display" width="720" height="480">
+            <p>Hey you, yes YOU, upgrade your browser!!</p>
+          </canvas>
         </div>
         <div id="dashboard">
           <div id="effects">

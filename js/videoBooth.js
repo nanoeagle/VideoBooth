@@ -2,8 +2,9 @@ var demoVideos = {
     video1: "../videos/demovideo1.mp4",
     video2: "../videos/demovideo2.mp4"
 };
+var effectFunction = null;
 
-window.onload = function() {
+window.onload = () => {
     setDemoVideo();
     setHandlersForButtons();
     setDefaultButtonStates();
@@ -13,9 +14,13 @@ function setDemoVideo() {
     var video = document.getElementById("video");
     video.src = demoVideos.video1;
     video.load();
-    video.onended = function() {
-        changeButtonStateToDepressed(document.getElementById("play"));
+    video.onratechange = () => {
+        var currentFrame = generateCurrentFrameOf(video);
+        processEachPixelOf(currentFrame);
+        display(currentFrame);
     }
+    video.onended = () => changeButtonStateToDepressed(
+        document.getElementById("play"));
 }
 
 function setHandlersForButtons() {

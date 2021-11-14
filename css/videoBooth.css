@@ -24,6 +24,11 @@ div#videoDiv {
 video#video {
     background-color: black;
 }
+div#videoDiv canvas {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
 
 /* dashboard */
 div#dashboard {
