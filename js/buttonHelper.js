@@ -56,15 +56,20 @@ function depressTheOtherRadioButtons(pressedButtonID, radioButtonIDs) {
 
 function doActualWorkOfTheButton(pressedButtonID) {
     var video = document.getElementById("video");
+    var effectFunctions = {
+        western: applyWesternEffect,
+        noir: applyNoirEffect,
+        scifi: applyScifiEffect
+    };
     switch (pressedButtonID) {
         case "normal":
-            effectFunction = null; break;
-        case "western":
-            effectFunction = applyWesternEffect; break;
-        case "noir":
-            effectFunction = applyNoirEffect; break;
-        case "scifi":
-            effectFunction = applyScifiEffect; break;
+            effectFunction = applyNothing; 
+            applyNothing();
+            break;
+        case "western": case "noir": case "scifi":
+            effectFunction = effectFunctions[pressedButtonID];
+            applyEffectIfConditionsAreSatisfied(video);
+            break;
         case "play":
             play(video); break;
         case "pause":

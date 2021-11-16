@@ -2,7 +2,7 @@ var demoVideos = {
     video1: "../videos/demovideo1.mp4",
     video2: "../videos/demovideo2.mp4"
 };
-var effectFunction = null;
+var effectFunction = applyNothing;
 
 window.onload = () => {
     setDemoVideo();
@@ -14,11 +14,7 @@ function setDemoVideo() {
     var video = document.getElementById("video");
     video.src = demoVideos.video1;
     video.load();
-    video.onratechange = () => {
-        var currentFrame = generateCurrentFrameOf(video);
-        processEachPixelOf(currentFrame);
-        display(currentFrame);
-    }
+    video.onplay = () => applyEffectIfConditionsAreSatisfied(video);
     video.onended = () => changeButtonStateToDepressed(
         document.getElementById("play"));
 }
