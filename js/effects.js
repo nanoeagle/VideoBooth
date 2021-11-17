@@ -26,7 +26,7 @@ function applyChosenEffectToEachPixelOf(frame) {
     var numberOfPixels = frame.data.length / 4;
     for (var i = 0; i < numberOfPixels; i++) {
         var pixelInfo = {
-            pos: i,
+            offset: i * 4,
             red: frame.data[i * 4 + 0],
             green: frame.data[i * 4 + 1],
             blue: frame.data[i * 4 + 2],
@@ -49,25 +49,42 @@ function applyNothing() {
     });
 }
 
-function applyWesternEffect(pixelInfo) {}
+function applyWesternEffect(pixelInfo) {
+    var baseColor = 
+        determineColorForWesternEffectBasedOn(pixelInfo);
+    setColorForWesternEffect(pixelInfo, baseColor);
+}
+
+function determineColorForWesternEffectBasedOn(pixelInfo) {
+    return (3 * pixelInfo.red + 4 * pixelInfo.green 
+        + pixelInfo.blue) >>> 3;
+}
+
+function setColorForWesternEffect(pixelInfo, baseColor) {
+    pixelInfo.enclosingFrameData[pixelInfo.offset] = baseColor + 40;
+    pixelInfo.enclosingFrameData[pixelInfo.offset + 1] = baseColor + 20;
+    pixelInfo.enclosingFrameData[pixelInfo.offset + 2] = baseColor - 20;
+}
 
 function applyNoirEffect(pixelInfo) {
-    var brightness = 
-        determineBrightnessForNoirEffectBasedOn(pixelInfo);
-    setBrightness(pixelInfo, brightness);
+    var color = determineColorForNoirEffectBasedOn(pixelInfo);
+    setColorForNoirEffect(pixelInfo, color);
 }
 
-function determineBrightnessForNoirEffectBasedOn(pixelInfo) {
-    var brightness = (3 * pixelInfo.red 
-        + 4 * pixelInfo.green + pixelInfo.blue) >>> 3;
-    if (brightness < 0) brightness = 0;
-    return brightness;
+function determineColorForNoirEffectBasedOn(pixelInfo) {
+    var color = (3 * pixelInfo.red + 4 * pixelInfo.green 
+        + pixelInfo.blue) >>> 3;
+    return color < 0 ? 0 : color;
 }
 
-function setBrightness(pixelInfo, brightness) {
+function setColorForNoirEffect(pixelInfo, color) {
     for (var i = 0; i < 3; i++) 
-        pixelInfo.enclosingFrameData[pixelInfo.pos * 4 + i] 
-            = brightness;
+        pixelInfo.enclosingFrameData[pixelInfo.offset + i] = color;
 }
 
-function applyScifiEffect(pixelInfo) {}
+function applyScifiEffect(pixelInfo) {
+    var primitiveColors = ["red", "green", "blue"];
+    for (var i = 0; i < 3; i++)
+        pixelInfo.enclosingFrameData[pixelInfo.offset + i] = 
+            Math.round(255 - pixelInfo[primitiveColors[i]]);
+}
